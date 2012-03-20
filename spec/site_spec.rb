@@ -32,6 +32,15 @@ describe Taza::Site do
     Bax.new.pages_path.should eql("./lib/sites/bax/pages/**/*.rb")
   end
 
+  it "loads sikuli", :sikuli do
+    browser = stub_browser
+    Taza::Browser.stubs(:create).returns(browser)
+    Taza::Settings.stubs(:config_file).returns({:sikuli => true})
+    Screen.expects(:new)
+    Barx = Class.new(Taza::Site)
+    Barx.new.screen.should be_a_kind_of Java::OrgSikuliScript::Screen
+  end
+
   it "should have flows defined as instance methods" do
     browser = stub_browser
     Taza::Browser.stubs(:create).returns(browser)

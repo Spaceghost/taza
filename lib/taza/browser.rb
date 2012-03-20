@@ -69,7 +69,7 @@ module Taza
       java_import "org.sikuli.script.Region"
       java_import "org.sikuli.script.Screen"
       begin
-      ::Screen.new
+        ::Screen.new
       rescue TypeError
         raise "You need to export $SIKULI_JAR with the full path for the Sikuli Jar (sikuli-script.jar)"
       end

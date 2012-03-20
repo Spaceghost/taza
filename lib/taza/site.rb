@@ -33,6 +33,7 @@ module Taza
       @@donot_close_browser = true
     end
     attr_accessor :browser
+    attr_accessor :screen
 
     # A site can be called a few different ways
     #
@@ -54,6 +55,7 @@ module Taza
       define_site_pages
       define_flows
       config = Settings.config(@class_name)
+      load_sikuli if config[:sikuli] == true
       if params[:browser]
         @browser = params[:browser]
       else
@@ -143,6 +145,21 @@ module Taza
 
     def base_path # :nodoc:
       '.'
+    end
+
+
+    def load_sikuli
+      require 'java'
+      begin
+        require ENV['SIKULI_JAR']
+      rescue TypeError
+        raise "You need to export $SIKULI_JAR with the full path for the Sikuli Jar (sikuli-script.jar)"
+      end
+
+      java_import "org.sikuli.script.SikuliScript"
+      java_import "org.sikuli.script.Region"
+      java_import "org.sikuli.script.Screen"
+      @screen = ::Screen.new
     end
   end
 end
