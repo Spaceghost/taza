@@ -61,9 +61,22 @@ module Taza
       end
       browser || Watir::IE.new
     end
+    def self.create_sikuli(params)
+      require 'java'
+      require ENV['SIKULI_JAR']
+
+      java_import "org.sikuli.script.SikuliScript"
+      java_import "org.sikuli.script.Region"
+      java_import "org.sikuli.script.Screen"
+      begin
+      ::Screen.new
+      rescue TypeError
+        raise "You need to export $SIKULI_JAR with the full path for the Sikuli Jar (sikuli-script.jar)"
+      end
+    end
   end
 
   # We don't know how to create the browser you asked for
   class BrowserUnsupportedError < StandardError; end
 end
-
+Taza::Screen = Taza::Browser

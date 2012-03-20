@@ -6,8 +6,23 @@ require 'rubigen/helpers/generator_test_helper'
 require 'taza'
 require 'watir-webdriver'
 require 'selenium-webdriver'
+#If you want to test Sikuli, put the jar in ~/.sikuli
 RSpec.configure do |config|
+  config.treat_symbols_as_metadata_keys_with_true_values = true
   config.mock_with :mocha
+
+  config.before(:each, :sikuli) do
+      require 'java'
+      begin
+        require ENV['SIKULI_JAR']
+      rescue TypeError
+        raise "You need to export $SIKULI_JAR with the full path for the Sikuli Jar (sikuli-script.jar)"
+      end
+
+      java_import "org.sikuli.script.SikuliScript"
+      java_import "org.sikuli.script.Region"
+      java_import "org.sikuli.script.Screen"
+  end
 end
 
 def null_device

@@ -63,3 +63,20 @@ describe Taza::Browser do
   end
 
 end
+describe Taza::Screen, :sikuli do
+  #This is just an alias for Taza::Browser, but describing its usage with sikuli.
+  #This only works in JRuby.
+
+
+  it 'should create a Sikuli instance' do
+    Screen.expects(:new)
+    browser = Taza::Screen.create(:driver => :sikuli)
+  end
+
+  it "should be able to create a selenium instance" do
+    browser = Taza::Browser.create(:driver => :sikuli)
+    browser.should be_a_kind_of(Screen)
+  end
+
+
+end
